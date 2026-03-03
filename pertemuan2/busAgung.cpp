@@ -1,8 +1,5 @@
-#include <cmath>
-#include <cstdio>
-#include <vector>
+
 #include <iostream>
-#include <algorithm>
 using namespace std;
 // Muhammad Firdaus Argifari 
 // 24060124130107
@@ -22,7 +19,11 @@ int main() {
     
     int maksTot = -1;
     for (int i = 0; i < N; i++) {
+        if (T[i].X == 0 && T[i].Y == 0) continue;
+        
         for (int j = i+1; j<N; j++) {
+            if (T[j].X == 0 && T[j].Y == 0) continue;
+
             int cekTitik = 0;
             int maksSem = -1;
             int x1 = T[i].X, y1 = T[i].Y;
