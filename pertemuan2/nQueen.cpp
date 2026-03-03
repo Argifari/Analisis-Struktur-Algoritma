@@ -40,6 +40,7 @@ int main() {
                 }
                 cout<<endl;
             }
+            cout <<"Jumlah Queen : " << nQueen <<endl;
         }else {
             cout<<"Kerajaan tidak dapat dilindungi!"<<endl;
         }
@@ -66,6 +67,7 @@ int main() {
                 }
                 cout<<endl;
             }
+            cout <<"Jumlah Queen : " << nQueen <<endl;
         }else {
             cout<<"Kerajaan tidak dapat dilindungi!"<<endl;
         }
