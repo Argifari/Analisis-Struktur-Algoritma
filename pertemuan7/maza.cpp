@@ -3,20 +3,13 @@ using namespace std;
 
 #define ll long long
 
-typedef struct{
-    int i,j;
-} Point;
+// Muhammad Firdaus Argifar
+// 24060124130107
+
+bool visited[1005][1005][11];
 
 typedef struct{
-    Point p;
-    int currentK, step;
-
-    void set(Point a, int b, int c) {
-        p = a;
-        currentK = b;
-        step = c;
-    }
-
+    int i, j, currentK, step;
 }Status;
 
 int main() {
@@ -32,37 +25,42 @@ int main() {
         return 0;
     }
 
-    string matrik[N];
-    bool visited[N][M];
+    vector<string>matrik;
+
 
     for (ll i = 0; i < N; i++) {
-        cin>>matrik[i];
+        string a;
+        cin >> a;
+        matrik.push_back(a);
     }
 
     queue<Status>node;
 
-    Point start, end;
-    start.i = -1; start.j = -1;
-    end.i = -1; end.j = -1;
+    
+    int startI = -1, startJ = -1;
+    int endI = -1, endJ = -1;
 
 
     for (ll i = 0; i < N; i++) {
         for (ll j = 0; j < M; j++) {
-            visited[i][j] = false;
             if (matrik[i][j] == 'S') {
-                start.i = i; start.j = j;
+                startI = i; startJ = j;
             }else if (matrik[i][j] == 'E') {
-                end.i = i; end.j = j;
+                endI = i; endJ = j;
             }
         }
     }
 
-    if (start.i == -1 || end.i == -1) {
+    if (startI == -1 || endI == -1) {
         cout<<-1<<endl;
         return 0;
     }
     Status startPoint;
-    startPoint.set(start,K,0);
+    startPoint.i = startI;
+    startPoint.j = startJ;
+    startPoint.currentK = K;
+    startPoint.step = 0;
+    visited[startPoint.i][startPoint.j][startPoint.currentK] = true;
 
 
     node.push(startPoint);
@@ -71,39 +69,41 @@ int main() {
         Status currentNode = node.front();
         node.pop();
 
-        char container = matrik[currentNode.p.i][currentNode.p.j];
-        visited[currentNode.p.i][currentNode.p.j] = true;
 
 
-        if (container == 'E') {
+
+        if (currentNode.i == endI && currentNode.j == endJ) {
             cout<<currentNode.step<<endl;
             return 0;
         }
 
-        if (container == '#') {
-            if (currentNode.currentK > 0) {
-                currentNode.currentK--;
-            }else {
-                continue;
-            }
-        }
+
         int moveI[] = {1,-1,0,0}, moveJ[] = {0,0,1,-1};
         
         for (ll i = 0; i < 4; i++) {
+            
+            
+            ll allMoveI = currentNode.i + moveI[i];
+            ll allMoveJ = currentNode.j + moveJ[i];
+            int leftK = currentNode.currentK;
+            
 
-            Point allMove;
-            allMove.i = currentNode.p.i + moveI[i];
-            allMove.j = currentNode.p.j + moveJ[i];
 
-            if (allMove.i == end.i && allMove.j == end.j) {
-                cout << currentNode.step + 1<< endl;
-                return 0;
-            }
-
-            if (0 <= allMove.i && allMove.i < N && 0 <= allMove.j && allMove.j < M) {
-                if (!visited[allMove.i][allMove.j]) {
+            if (0 <= allMoveI && allMoveI < N && 0 <= allMoveJ && allMoveJ < M) {
+                if (matrik[allMoveI][allMoveJ] == '#') {
+                    if (leftK > 0) {
+                        leftK--;
+                    }else {
+                        continue;
+                    }
+                }
+                if (!visited[allMoveI][allMoveJ][leftK]) {
+                    visited[allMoveI][allMoveJ][leftK] = true;
                     Status temp;
-                    temp.set(allMove,currentNode.currentK, currentNode.step + 1);
+                    temp.i = allMoveI;
+                    temp.j = allMoveJ;
+                    temp.currentK = leftK;
+                    temp.step = currentNode.step + 1;
                     node.push(temp);
                 }
             }
